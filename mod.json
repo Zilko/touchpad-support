@@ -1,0 +1,119 @@
+{
+	"geode": "4.10.0",
+	"gd": {
+		"win": "2.2074",
+		"android": "2.2074",
+		"ios": "2.2074"
+	},
+	"id": "zilko.touchpad_support",
+	"name": "Touchpad Support",
+	"version": "v1.0.0",
+	"developer": "Zilko",
+	"description": "touchpad support + other scroll improvements",
+	"tags": [
+		"editor", "offline", "enhancement", "interface", "bugfix", "utility"
+	],
+	"links": {
+		"source": "https://github.com/Zilko/touchpad-support"
+	},
+	"settings": {
+		"enable": {
+			"name": "Enable",
+			"description": "Enable the mod",
+			"type": "bool",
+			"default": true
+		},
+		"editor-title": {
+			"name": "Editor",
+			"type": "title"
+		},
+		"editor-sensivity": {
+			"name": "Editor sensivity",
+			"description": "Scroll sensivity in the editor",
+			"type": "float",
+			"default": 1.0,
+			"min": 0.01,
+			"max": 10.0,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": false
+			}
+		},
+		"editor-multiplier": {
+			"name": "Editor Alt Multiplier",
+			"description": "Sensivity multiplier when holding Alt in the editor",
+			"type": "float",
+			"default": 2.0,
+			"min": 0.01,
+			"max": 10.0,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": false
+			}
+		},
+		"zoom-sensivity": {
+			"name": "Editor Zoom sensivity",
+			"description": "Zoom sensivity in the editor",
+			"type": "float",
+			"default": 1.0,
+			"min": 0.01,
+			"max": 10.0,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": false
+			}
+		},
+		"zoom-step": {
+			"name": "Editor Button Zoom Step",
+			"description": "How big the zoom steps are gonna be in the editor when pressing the zoom buttons",
+			"type": "float",
+			"default": 0.1,
+			"min": 0.01,
+			"max": 1.0,
+			"control": {
+				"slider": true,
+				"arrows": true,
+				"arrow-step": 0.1,
+				"slider-step": 0.01
+			}
+		},
+		"pinch-to-zoom": {
+			"name": "Pinch To Zoom",
+			"description": "Allows you to pinch to zoom in mobile screens",
+			"type": "bool",
+			"default": true,
+			"platforms": [ "mobile" ]
+		},
+		"menus-title": {
+			"name": "Menus",
+			"type": "title"
+		},
+		"scroll-sensivity": {
+			"name": "Scroll sensivity",
+			"description": "Scroll sensivity in the editor",
+			"type": "float",
+			"default": 1.0,
+			"min": 0.01,
+			"max": 10.0,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": false
+			}
+		},
+		"scroll-multiplier": {
+			"name": "Scroll Alt Multiplier",
+			"description": "Sensivity multiplier when holding Alt in the editor",
+			"type": "float",
+			"default": 2.0,
+			"control": {
+				"slider": true,
+				"slider-step": 0.01,
+				"arrows": false
+			}
+		}
+	}
+}
