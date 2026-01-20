@@ -1,11 +1,8 @@
-#include <Geode/modify/MenuLayer.hpp>
 #include <Geode/modify/EditorUI.hpp>
 #include <Geode/modify/CCMouseDispatcher.hpp>
 #include <Geode/modify/BoomScrollLayer.hpp>
 
 using namespace geode::prelude;
-
-static WNDPROC g_ogWndProc = nullptr;
 
 static CCPoint g_currentVelocity = {0, 0};
 
@@ -312,6 +309,10 @@ class $modify(ProBoomScrollLayer, BoomScrollLayer) {
 
 };
 
+#ifdef GEODE_IS_WINDOWS
+
+static WNDPROC g_ogWndProc = nullptr;
+
 LRESULT CALLBACK ProWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {    
     switch (msg) {
         case WM_MOUSEWHEEL: {
@@ -361,12 +362,19 @@ LRESULT CALLBACK ProWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return CallWindowProc(g_ogWndProc, hwnd, msg, wParam, lParam);
 }
 
+#endif
+
 $on_mod(Loaded) {
+
+    #ifdef GEODE_IS_WINDOWS
+
     g_ogWndProc = (WNDPROC)SetWindowLongPtr(
         WindowFromDC(wglGetCurrentDC()),
         GWLP_WNDPROC,
         (LONG_PTR)ProWndProc
     );
+
+    #endif
 
     updateSettings();
 
