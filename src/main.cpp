@@ -192,7 +192,7 @@ class $modify(ProEditorUI, EditorUI) {
         auto f = m_fields.self();
 
         if (f->m_touch1 && f->m_touch2) {
-            return false;
+            return true;
         }
         
         if (!f->m_touch1) {
@@ -244,11 +244,8 @@ class $modify(ProEditorUI, EditorUI) {
 
         auto f = m_fields.self();
 
-        if (p0 == f->m_touch1) {
+        if (p0 == f->m_touch1 || p0 == f->m_touch2) {
             f->m_touch1 = nullptr;
-        }
-
-        if (p0 == f->m_touch2) {
             f->m_touch2 = nullptr;
         }
     }
