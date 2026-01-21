@@ -93,7 +93,7 @@ class $modify(ProEditorUI, EditorUI) {
 
         Loader::get()->queueInMainThread([self = Ref(this)] {
             g_targetZoom = self->m_editorLayer->m_objectLayer->getScale();
-            schedule(schedule_selector(ProEditorUI::updateScroll), 0.f);
+            self->schedule(schedule_selector(ProEditorUI::updateScroll), 0.f);
         });
 
         return true;
