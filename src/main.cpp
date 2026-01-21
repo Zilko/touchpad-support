@@ -263,6 +263,15 @@ class $modify(ProEditorUI, EditorUI) {
             && f->m_shouldKillTouch
         ) {
             f->m_shouldKillTouch = false;
+
+            if (p0 == f->m_touch1) {
+                f->m_touch1 = nullptr;
+            }
+
+            if (p0 == f->m_touch1) {
+                f->m_touch2 = nullptr;
+            }
+
             return;
         }
 
