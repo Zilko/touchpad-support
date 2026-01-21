@@ -248,7 +248,7 @@ class $modify(ProEditorUI, EditorUI) {
             f->m_touch1 = nullptr;
         }
 
-        if (p0 == f->m_touch1) {
+        if (p0 == f->m_touch2) {
             f->m_touch2 = nullptr;
         }
     }
