@@ -240,7 +240,7 @@ class $modify(ProEditorUI, EditorUI) {
     }
 
     void ccTouchEnded(CCTouch* p0, CCEvent* p1) {
-        EditorUI::ccTouchEnded(p0);
+        EditorUI::ccTouchEnded(p0, p1);
 
         auto f = m_fields.self();
 
