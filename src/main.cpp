@@ -266,6 +266,14 @@ class $modify(ProEditorUI, EditorUI) {
             return;
         }
 
+        if (p0 == f->m_touch1) {
+            f->m_touch1 = nullptr;
+        }
+
+        if (p0 == f->m_touch1) {
+            f->m_touch2 = nullptr;
+        }
+
         EditorUI::ccTouchEnded(p0, p1);
     }
 
