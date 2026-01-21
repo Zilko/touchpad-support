@@ -213,7 +213,11 @@ class $modify(ProEditorUI, EditorUI) {
         auto f = m_fields.self();
 
         if (!f->m_touch1 || !f->m_touch2) {
-            return EditorUI::ccTouchMoved(p0, p1);
+            if (p0 == f->m_touch1) {
+                EditorUI::ccTouchMoved(p0, p1);
+            }
+
+            return;
         }
 
         auto prevDist = ccpDistance(
