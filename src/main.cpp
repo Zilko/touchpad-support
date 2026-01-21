@@ -89,11 +89,12 @@ class $modify(ProEditorUI, EditorUI) {
         m_fields.self();
 
         g_isEditor = true;
-
-        schedule(schedule_selector(ProEditorUI::updateScroll), 0.f);
-
-        g_targetZoom = m_editorLayer->m_objectLayer->getScale();
         g_currentVelocity = CCPoint{0, 0};
+
+        Loader::get()->queueInMainThread([self = Ref(this)] {
+            g_targetZoom = self->m_editorLayer->m_objectLayer->getScale();
+            schedule(schedule_selector(ProEditorUI::updateScroll), 0.f);
+        });
 
         return true;
     }
@@ -366,7 +367,7 @@ LRESULT CALLBACK ProWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         case WM_MOUSEWHEEL: {
             auto delta = GET_WHEEL_DELTA_WPARAM(wParam);
             auto steps = delta / static_cast<float>(WHEEL_DELTA);
-            bool likelyTouchpad = (abs(delta) < WHEEL_DELTA);
+            auto likelyTouchpad = (abs(delta) < WHEEL_DELTA);
             auto ctrl = (GET_KEYSTATE_WPARAM(wParam) & MK_CONTROL) != 0;
             auto shift = (GET_KEYSTATE_WPARAM(wParam) & MK_SHIFT) != 0;
             auto alt = (GetKeyState(VK_MENU) & 0x8000) != 0;
