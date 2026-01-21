@@ -210,13 +210,11 @@ class $modify(ProEditorUI, EditorUI) {
     }
 
     void ccTouchMoved(CCTouch* p0, CCEvent* p1) {
+        EditorUI::ccTouchMoved(p0, p1);
+        
         auto f = m_fields.self();
-
+        
         if (!f->m_touch1 || !f->m_touch2) {
-            if (p0 == f->m_touch1) {
-                EditorUI::ccTouchMoved(p0, p1);
-            }
-
             return;
         }
 
