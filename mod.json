@@ -92,7 +92,8 @@
 		},
 		"menus-title": {
 			"name": "Menus",
-			"type": "title"
+			"type": "title",
+			"platforms": [ "win" ]
 		},
 		"scroll-sensivity": {
 			"name": "Scroll sensivity",

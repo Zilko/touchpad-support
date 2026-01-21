@@ -190,7 +190,8 @@ class $modify(ProEditorUI, EditorUI) {
 
     bool ccTouchBegan(CCTouch* p0, CCEvent* p1) {
         if (
-            !Mod::get()->getSettingValue<bool>("pinch-to-zoom")
+            !g_enabled
+            || !Mod::get()->getSettingValue<bool>("pinch-to-zoom")
             || m_editorLayer->m_playbackMode == PlaybackMode::Playing
         ) {
             return EditorUI::ccTouchBegan(p0, p1);
