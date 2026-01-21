@@ -141,7 +141,7 @@ class $modify(ProEditorUI, EditorUI) {
         #endif
     }
 
-    #ifndef GEODE_IS_IOS
+    #ifndef GEODE_IS_ANDROID
 
     void zoomIn(CCObject* sender) {
         if (!g_enabled) {
