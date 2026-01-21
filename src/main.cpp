@@ -51,6 +51,7 @@ class $modify(ProEditorUI, EditorUI) {
         float m_zoomStart = 1.f;
 
         bool m_centerZoom = false;
+        bool m_shouldKillTouch = false;
 
         ~Fields() {
             g_isEditor = false;
@@ -111,6 +112,9 @@ class $modify(ProEditorUI, EditorUI) {
         updateVelocity(dt);
 
         auto scale = m_editorLayer->m_objectLayer->getScale();
+
+        #ifdef GEODE_IS_WINDOWS
+
         auto f = m_fields.self();
 
         if (abs(scale - g_targetZoom) > 0.01f) {
@@ -121,7 +125,20 @@ class $modify(ProEditorUI, EditorUI) {
         } else {
             f->m_centerZoom = false;
         }
+
+        #else
+
+        if (abs(scale - g_targetZoom) > 0.01f) {
+            proUpdateZoom(
+                scale + (g_targetZoom - scale) * 0.2f,
+                CCPoint(getContentSize() / 2.f)
+            );
+        }
+
+        #endif
     }
+
+    #ifdef GEODE_IS_WINDOWS
 
     void zoomIn(CCObject* sender) {
         if (!g_enabled) {
@@ -150,6 +167,15 @@ class $modify(ProEditorUI, EditorUI) {
 
         m_fields->m_centerZoom = true;
     }
+
+    #else
+
+    void zoomGameLayer(bool in) {
+        g_targetZoom += Mod::get()->getSettingValue<float>("zoom-step") * (in ? 1 : -1);
+        g_targetZoom = clamp(g_targetZoom, 0.1f, 4.f);
+    }
+
+    #endif
 
     void scrollWheel(float y, float x) {
         if (!g_enabled) {
@@ -206,7 +232,7 @@ class $modify(ProEditorUI, EditorUI) {
         }
 
         g_targetZoom *= currDist / prevDist;
-        g_targetZoom = std::clamp(g_targetZoom, 0.1f, 4.f);
+        g_targetZoom = clamp(g_targetZoom, 0.1f, 4.f);
 
         proUpdateZoom(
             g_targetZoom,
@@ -217,8 +243,28 @@ class $modify(ProEditorUI, EditorUI) {
     void ccTouchEnded(CCTouch* p0, CCEvent* p1) {
         auto f = m_fields.self();
 
-        f->m_touch1 = nullptr;
-        f->m_touch2 = nullptr;
+        if (
+            f->m_touch1 && f->m_touch2
+            && (p0 == f->m_touch1 || p0 == f->m_touch2)
+        ) {
+            f->m_shouldKillTouch = true;
+
+            if (p0 == f->m_touch1) {
+                f->m_touch1 = f->m_touch2;
+            }
+            
+            f->m_touch2 = nullptr;
+
+            return;
+        }
+
+        if (
+            (f->m_touch1 || f->m_touch2)
+            && f->m_shouldKillTouch
+        ) {
+            f->m_shouldKillTouch = false;
+            return;
+        }
 
         EditorUI::ccTouchEnded(p0, p1);
     }
