@@ -51,7 +51,6 @@ class $modify(ProEditorUI, EditorUI) {
         float m_zoomStart = 1.f;
 
         bool m_centerZoom = false;
-        bool m_shouldKillTouch = false;
 
         ~Fields() {
             g_isEditor = false;
@@ -241,39 +240,9 @@ class $modify(ProEditorUI, EditorUI) {
     }
 
     void ccTouchEnded(CCTouch* p0, CCEvent* p1) {
+        EditorUI::ccTouchEnded(p0);
+
         auto f = m_fields.self();
-
-        if (
-            f->m_touch1 && f->m_touch2
-            && (p0 == f->m_touch1 || p0 == f->m_touch2)
-        ) {
-            f->m_shouldKillTouch = true;
-
-            if (p0 == f->m_touch1) {
-                f->m_touch1 = f->m_touch2;
-            }
-            
-            f->m_touch2 = nullptr;
-
-            return;
-        }
-
-        if (
-            (f->m_touch1 || f->m_touch2)
-            && f->m_shouldKillTouch
-        ) {
-            f->m_shouldKillTouch = false;
-
-            if (p0 == f->m_touch1) {
-                f->m_touch1 = nullptr;
-            }
-
-            if (p0 == f->m_touch1) {
-                f->m_touch2 = nullptr;
-            }
-
-            return;
-        }
 
         if (p0 == f->m_touch1) {
             f->m_touch1 = nullptr;
@@ -282,8 +251,6 @@ class $modify(ProEditorUI, EditorUI) {
         if (p0 == f->m_touch1) {
             f->m_touch2 = nullptr;
         }
-
-        EditorUI::ccTouchEnded(p0, p1);
     }
 
     #endif
