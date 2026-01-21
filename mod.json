@@ -38,7 +38,8 @@
 				"slider": true,
 				"slider-step": 0.01,
 				"arrows": false
-			}
+			},
+			"platforms": [ "win" ]
 		},
 		"editor-multiplier": {
 			"name": "Editor Alt Multiplier",
@@ -51,7 +52,8 @@
 				"slider": true,
 				"slider-step": 0.01,
 				"arrows": false
-			}
+			},
+			"platforms": [ "win" ]
 		},
 		"zoom-sensivity": {
 			"name": "Editor Zoom sensivity",
@@ -64,7 +66,8 @@
 				"slider": true,
 				"slider-step": 0.01,
 				"arrows": false
-			}
+			},
+			"platforms": [ "win" ]
 		},
 		"zoom-step": {
 			"name": "Editor Button Zoom Step",
@@ -102,7 +105,8 @@
 				"slider": true,
 				"slider-step": 0.01,
 				"arrows": false
-			}
+			},
+			"platforms": [ "win" ]
 		},
 		"scroll-multiplier": {
 			"name": "Scroll Alt Multiplier",
@@ -113,7 +117,8 @@
 				"slider": true,
 				"slider-step": 0.01,
 				"arrows": false
-			}
+			},
+			"platforms": [ "win" ]
 		}
 	}
 }

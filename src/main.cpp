@@ -201,7 +201,7 @@ class $modify(ProEditorUI, EditorUI) {
             f->m_touch2->getLocation()
         );
 
-        g_targetZoom += (currDist - prevDist) * 0.5f;
+        g_targetZoom += (currDist - prevDist) * 0.035f;
         g_targetZoom = std::clamp(g_targetZoom, 0.1f, 4.f);
 
         proUpdateZoom(
