@@ -98,7 +98,11 @@ class $modify(ProEditorUI, EditorUI) {
         return true;
     }
 
-    void updateScroll(float dt) {        
+    void updateScroll(float dt) {
+        if (m_editorLayer->m_playbackMode == PlaybackMode::Playing) {
+            return updateVelocity(dt);
+        }
+
         if (g_currentVelocity != ccp(0, 0)) {
             m_editorLayer->m_objectLayer->setPosition(
                 m_editorLayer->m_objectLayer->getPosition() - g_currentVelocity * dt
@@ -137,7 +141,7 @@ class $modify(ProEditorUI, EditorUI) {
         #endif
     }
 
-    #ifdef GEODE_IS_WINDOWS
+    #ifndef GEODE_IS_IOS
 
     void zoomIn(CCObject* sender) {
         if (!g_enabled) {
@@ -185,7 +189,10 @@ class $modify(ProEditorUI, EditorUI) {
     #ifdef GEODE_IS_MOBILE
 
     bool ccTouchBegan(CCTouch* p0, CCEvent* p1) {
-        if (!Mod::get()->getSettingValue<bool>("pinch-to-zoom")) {
+        if (
+            !Mod::get()->getSettingValue<bool>("pinch-to-zoom")
+            || m_editorLayer->m_playbackMode == PlaybackMode::Playing
+        ) {
             return EditorUI::ccTouchBegan(p0, p1);
         }
 
@@ -210,10 +217,17 @@ class $modify(ProEditorUI, EditorUI) {
     }
 
     void ccTouchMoved(CCTouch* p0, CCEvent* p1) {
-        EditorUI::ccTouchMoved(p0, p1);
-        
         auto f = m_fields.self();
-        
+        auto prevSwipe = m_swipeEnabled;
+
+        if (f->m_touch1 && f->m_touch2) {
+            m_swipeEnabled = false;
+        }
+
+        EditorUI::ccTouchMoved(p0, p1);
+
+        m_swipeEnabled = prevSwipe;
+                
         if (!f->m_touch1 || !f->m_touch2) {
             return;
         }
