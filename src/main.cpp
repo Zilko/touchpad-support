@@ -9,6 +9,7 @@ static CCPoint g_currentVelocity = {0, 0};
 static bool g_didStartSchedule = false;
 static bool g_fakeScroll = false;
 static bool g_isEditor = false;
+static bool g_isEditorBlocked = false;
 static bool g_enabled = true;
 
 static float g_targetZoom = 1.f;
@@ -28,7 +29,7 @@ void updateSettings() {
 }
 
 void updateVelocity(float dt) {
-    g_currentVelocity *= pow(0.001f, dt * (g_isEditor ? (12.f * g_editorSensivity) : (3.f * g_scrollSensivity)));
+    g_currentVelocity *= pow(0.001f, dt * ((g_isEditor && !g_isEditorBlocked) ? (12.f * g_editorSensivity) : (3.f * g_scrollSensivity)));
         
     if (abs(g_currentVelocity.x) < 0.01f) {
         g_currentVelocity.x = 0.f;
@@ -100,6 +101,9 @@ class $modify(ProEditorUI, EditorUI) {
     }
 
     void updateScroll(float dt) {
+        if (g_isEditorBlocked) {
+            return;
+        }
         if (m_editorLayer->m_playbackMode == PlaybackMode::Playing) {
             return updateVelocity(dt);
         }
@@ -276,7 +280,14 @@ class $modify(ProCCMouseDispatcher, CCMouseDispatcher) {
 
     void updateScroll(float dt) {
         if (LevelEditorLayer::get()) {
-            return;
+            auto scene = CCScene::get();
+
+            g_isEditorBlocked = scene->getChildrenCount() > 0
+                && scene->getChildByType<FLAlertLayer>(-1);
+
+            if (!g_isEditorBlocked) {
+                return;
+            }
         }
 
         g_fakeScroll = true;
@@ -373,20 +384,20 @@ LRESULT CALLBACK ProWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             auto alt = (GetKeyState(VK_MENU) & 0x8000) != 0;
 
             if (alt) {
-                steps *= 4.f * (g_isEditor ? g_editorMultiplier : g_scrollMultiplier);
+                steps *= 4.f * ((g_isEditor && !g_isEditorBlocked) ? g_editorMultiplier : g_scrollMultiplier);
             }
 
             if (!ctrl) {
-                steps *= g_isEditor ? g_editorSensivity : g_scrollSensivity;
+                steps *= (g_isEditor && !g_isEditorBlocked) ? g_editorSensivity : g_scrollSensivity;
             }
 
             if (ctrl) {
                 g_targetZoom *= pow(1.1f, steps * 3.4f * g_zoomSensivity);
                 g_targetZoom = clamp(g_targetZoom, 0.05f, 2.5f);
             } else if (shift && !likelyTouchpad) {
-                g_currentVelocity.x -= steps * (g_isEditor ? 600.f : 220.f);
+                g_currentVelocity.x -= steps * ((g_isEditor && !g_isEditorBlocked) ? 600.f : 220.f);
             } else {
-                g_currentVelocity.y += steps * (g_isEditor ? 600.f : 220.f);
+                g_currentVelocity.y += steps * ((g_isEditor && !g_isEditorBlocked) ? 600.f : 220.f);
             }
 
             break;
@@ -397,12 +408,12 @@ LRESULT CALLBACK ProWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             auto alt = (GetKeyState(VK_MENU) & 0x8000) != 0;
             
             if (alt) {
-                steps *= 4.f * (g_isEditor ? g_editorMultiplier : g_scrollMultiplier);
+                steps *= 4.f * ((g_isEditor && !g_isEditorBlocked) ? g_editorMultiplier : g_scrollMultiplier);
             }
 
-            steps *= g_isEditor ? g_editorSensivity : g_scrollSensivity;
+            steps *= (g_isEditor && !g_isEditorBlocked) ? g_editorSensivity : g_scrollSensivity;
 
-            g_currentVelocity.x += steps * (g_isEditor ? 600.f : 220.f);
+            g_currentVelocity.x += steps * ((g_isEditor && !g_isEditorBlocked) ? 600.f : 220.f);
 
             break;
         }
