@@ -282,7 +282,7 @@ class $modify(ProCCMouseDispatcher, CCMouseDispatcher) {
         if (LevelEditorLayer::get()) {
             auto scene = CCScene::get();
 
-            g_isEditorBlocked = scene->getChildrenCount() > 0
+            g_isEditorBlocked = scene->getChildrenCount() > 1
                 && scene->getChildByType<FLAlertLayer>(-1);
 
             if (!g_isEditorBlocked) {
